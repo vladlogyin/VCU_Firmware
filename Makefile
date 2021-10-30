@@ -16,7 +16,7 @@ PROJECT_BIN:= $(PROJECT).bin
 
 SOURCES_CPP= lib/ringbuffer/ringbuffer.cpp
 SOURCES_CPP+= drivers/lm75/lm75.cpp drivers/bme280/bme280.cpp drivers/rc522/rc522.cpp drivers/ds3231/ds3231.cpp drivers/max7219/max7219.cpp drivers/ili9341/ili9341.cpp drivers/cdcacm/cdcacm.cpp
-SOURCES_CPP+= lib/systemutils.cpp
+SOURCES_CPP+= lib/systemutils.cpp lib/ringbuffer/ringbuffer.cpp
 SOURCES_C= tinyprintf/tinyprintf.c
 
 OBJECTS:= $(patsubst %.cpp, %.o, $(SOURCES_CPP)) $(patsubst %.c, %.o, $(SOURCES_C))
@@ -76,7 +76,7 @@ install: flash
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
-$(OBJECTS): libopencm3/lib/libopencm3_stm32f1.a
+$(PROJECT_OBJ) $(OBJECTS): libopencm3/lib/libopencm3_stm32f1.a
 
 $(PROJECT_ELF): $(PROJECT_OBJ) $(OBJECTS) libopencm3/lib/libopencm3_stm32f1.a
 	$(LD) $(LDFLAGS) $^ -o $@
