@@ -5,7 +5,7 @@ Currently targeting the STM32F407VGT6 (cortex m4)
 Other candidates are:
 - SAMC21N/J/G (dual CAN) (cortex m0+) (somewhat cheap)
 - STM32F105/7 (dual CAN) (cortex m3) (familiar)
-- STM32F205/7 (dual can) (cortex m3) (familiar) (very cheap)
+- STM32F205/7 (dual CAN) (cortex m3) (familiar) (very cheap)
 
 # Hardware assignments
 
