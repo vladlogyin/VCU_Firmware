@@ -15,8 +15,12 @@ PROJECT_ELF:= $(PROJECT).elf
 PROJECT_BIN:= $(PROJECT).bin
 
 SOURCES_CPP= lib/ringbuffer/ringbuffer.cpp
-SOURCES_CPP+= drivers/lm75/lm75.cpp drivers/bme280/bme280.cpp drivers/rc522/rc522.cpp drivers/ds3231/ds3231.cpp drivers/max7219/max7219.cpp drivers/ili9341/ili9341.cpp drivers/cdcacm/cdcacm.cpp
+#SOURCES_CPP+= drivers/lm75/lm75.cpp drivers/bme280/bme280.cpp drivers/rc522/rc522.cpp drivers/ds3231/ds3231.cpp drivers/max7219/max7219.cpp drivers/ili9341/ili9341.cpp drivers/cdcacm/cdcacm.cpp
 SOURCES_CPP+= lib/systemutils.cpp lib/ringbuffer/ringbuffer.cpp
+# VCU specific drivers
+#SOURCES_CPP+=
+# RTOS sources
+SOURCES_CPP+= rtos/rtos.cpp rtos/systime.cpp rtos/sched.cpp rtos/task.cpp rtos/io.cpp rtos/perf.cpp
 SOURCES_C= tinyprintf/tinyprintf.c
 
 OBJECTS:= $(patsubst %.cpp, %.o, $(SOURCES_CPP)) $(patsubst %.c, %.o, $(SOURCES_C))
@@ -24,12 +28,12 @@ DEPENDS:= $(patsubst %.cpp,%.d,$(SOURCES_CPP)) $(patsubst %.c, %.d, $(SOURCES_C)
 # setup
 INCLUDE_DIRS= -I. -I./drivers -I./libopencm3/include
 LIBRARY_DIRS= -L./libopencm3/lib
-LIBRARIES= -lgcc -lm -lopencm3_stm32f1 -lstdc++
+LIBRARIES= -lgcc -lm -lopencm3_stm32f4 -lstdc++ -lnosys
 
 # Select c++17 and turn optimizations on
-COMPILE_OPTIONS= -fno-exceptions -fno-non-call-exceptions -fno-common -ffunction-sections -fdata-sections -flto -std=c++17 -O2 -fno-rtti -finline-small-functions -findirect-inlining
-# Include debugging symbols and and turn off optimizations
-#COMPILE_OPTIONS+= -g3 -O0
+COMPILE_OPTIONS= -fno-exceptions -fno-non-call-exceptions -fno-common -ffunction-sections -fdata-sections -flto -std=c++17 -O2 -fno-rtti -finline-small-functions -findirect-inlining -fno-use-cxa-atexit
+# Include debugging symbols and and turn off 
+COMPILE_OPTIONS+= -g3
 
 CROSS= arm-none-eabi-
 
@@ -44,7 +48,8 @@ SIZE= $(CROSS)size
 # Define MCU specific flags here
 # Example for an STM32F103 MCU with a cortex m3 core
 # -mcpu=cortex-m3 -mthumb -msoft-float -DSTM32F1
-ARCHITECTURE_FLAGS= -mcpu=cortex-m3 -mthumb -msoft-float -DSTM32F1
+# Example for an STM32F4XX MCU with a cortex m4 core
+ARCHITECTURE_FLAGS= -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mcpu=cortex-m4 -DSTM32F4
 
 CXXFLAGS= $(COMPILE_OPTIONS) $(ARCHITECTURE_FLAGS) $(INCLUDE_DIRS)
 CFLAGS= $(COMPILE_OPTIONS) $(ARCHITECTURE_FLAGS) $(INCLUDE_DIRS)
@@ -52,7 +57,7 @@ ASFLAGS= $(COMPILE_OPTIONS) -c
 
 LDFLAGS= -mthumb -nostartfiles --static --specs=nosys.specs --specs=nano.specs
 # Select linker script
-LDFLAGS+= -T toolchain/ldscripts/stm32f103.ld
+LDFLAGS+= -T toolchain/ldscripts/stm32f407.ld
 # Add linker optimizations
 LDFLAGS+= $(CXXFLAGS)
 # Add libraries
@@ -76,9 +81,9 @@ install: flash
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
-$(PROJECT_OBJ) $(OBJECTS): libopencm3/lib/libopencm3_stm32f1.a
+$(PROJECT_OBJ) $(OBJECTS): libopencm3/lib/libopencm3_stm32f4.a
 
-$(PROJECT_ELF): $(PROJECT_OBJ) $(OBJECTS) libopencm3/lib/libopencm3_stm32f1.a
+$(PROJECT_ELF): $(PROJECT_OBJ) $(OBJECTS) libopencm3/lib/libopencm3_stm32f4.a
 	$(LD) $(LDFLAGS) $^ -o $@
 	$(SIZE) $@
 
@@ -93,10 +98,10 @@ flash: build
 	-pkill openocd -9
 	-rm target.bin
 	ln -sr $(PROJECT_BIN) target.bin
-	openocd -f toolchain/openocd/stm32f1_flash.cfg
+	openocd -f toolchain/openocd/stm32f4_flash.cfg
 debug: flash
 	-pkill openocd -9
-	openocd -f toolchain/openocd/stm32f1_debug.cfg &
+	openocd -f toolchain/openocd/stm32f4_debug.cfg &
 	gdb -iex "target extended-remote :3333" $(PROJECT_ELF)
 # libopencm3
 

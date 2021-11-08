@@ -1,3 +1,5 @@
+#pragma once
+
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/i2c.h>
@@ -5,18 +7,14 @@
 #include <libopencm3/cm3/nvic.h>
 #include <libopencm3/stm32/timer.h>
 
-#include <lib/systemutils.h>
 #include <stdlib.h>
 
+#include <rtos/rtos.h>
+#include <rtos/perf.h>
 /**
  * Sets up PLL and alternate function clocksetup
  */
 void clocksetup(void);
-
-/**
- * Sets up PB12 along with a timer base interrupt to toggle it
- */
-void ledsetup(void);
 
 /**
  * Sets up USART1 for transmission
@@ -24,8 +22,31 @@ void ledsetup(void);
 void usartsetup(void);
 
 /**
- * Prints null terminated string to USART1
+ * VCU init task
  *
- * @param str string to be printed
+ * This task manages all other VCU related tasks
  */
-int usart_print(const char* str);
+class vcu_init_task : public rtos_task
+{
+public:
+  profiler prof;
+  vcu_init_task() : rtos_task()
+  {
+    char task_name[]="vcu init";
+    std::strcpy(name,task_name);
+  }
+  virtual task_status start() override
+  {
+    rtos::log("Adding profiler task");
+    parentScheduler->addTask(&prof);
+    return rtos_task::RTOS_TASK_LOOP;
+  }
+  virtual task_status loop() override
+  {
+    profiler::startCount(parentScheduler->currentTaskID);
+    rtos::log("alive!");
+    sleepFor(5000);
+    profiler::endCount(parentScheduler->currentTaskID);
+    return rtos_task::RTOS_TASK_SLEEP;
+  }
+};
