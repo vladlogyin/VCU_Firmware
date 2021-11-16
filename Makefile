@@ -21,6 +21,9 @@ SOURCES_CPP+= lib/systemutils.cpp lib/ringbuffer/ringbuffer.cpp
 #SOURCES_CPP+=
 # RTOS sources
 SOURCES_CPP+= rtos/rtos.cpp rtos/systime.cpp rtos/sched.cpp rtos/task.cpp rtos/io.cpp rtos/perf.cpp
+# VCU sources
+SOURCES_CPP+= vcu/vcu_tasks.cpp
+
 SOURCES_C= tinyprintf/tinyprintf.c
 
 OBJECTS:= $(patsubst %.cpp, %.o, $(SOURCES_CPP)) $(patsubst %.c, %.o, $(SOURCES_C))
