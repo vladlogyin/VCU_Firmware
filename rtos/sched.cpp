@@ -67,7 +67,7 @@ bool rtos_scheduler::start()
           currentTaskPtr->status=currentTaskPtr->stop();
           break;
         case rtos_task::RTOS_TASK_SLEEP:
-          sleeping = systime::getMillis()<=sleepEnd[currentTaskID];
+          sleeping = systime::getMillis()<sleepEnd[currentTaskID];
           
           if(!sleepOverflow[currentTaskID] && !sleeping)
           {
