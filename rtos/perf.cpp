@@ -8,7 +8,7 @@ uint32_t profiler::perfCounters[RTOS_MAX_TASKS];
 
 profiler::profiler()
 {
-  char new_name[]="profiler";
+  const char new_name[]="profiler";
   std::strcpy(name, new_name);
   resetCounts();
 }
