@@ -11,14 +11,16 @@ rtos_task::task_status vcu_init_task::start()
 {
   rtos::log("Adding profiler task");
   parentScheduler->addTask(&prof);
+  rtos::log("Adding accelerator task");
+  parentScheduler->addTask(&accelerator);
   return rtos_task::RTOS_TASK_LOOP;
 }
 
 rtos_task::task_status vcu_init_task::loop()
 {
   profiler::startCount(parentScheduler->currentTaskID);
-  rtos::log("alive!");
   sleepFor(5000);
-  profiler::endCount(parentScheduler->currentTaskID);
+  rtos::log("alive!");
+  profiler::stopCount(parentScheduler->currentTaskID);
   return rtos_task::RTOS_TASK_SLEEP;
 }

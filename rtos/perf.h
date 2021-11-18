@@ -34,7 +34,7 @@ public:
   static uint32_t perfCounters[RTOS_MAX_TASKS];
 
   static void startCount(int tasknum);
-  static void endCount(int tasknum);
+  static void stopCount(int tasknum);
   static void resetCounts();
 
   rtos_task::task_status start() override;

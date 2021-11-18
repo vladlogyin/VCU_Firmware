@@ -29,6 +29,7 @@ rtos_task::task_status profiler::start()
 rtos_task::task_status profiler::loop()
 {
     updateStats=false;
+    sleepFor(10000);
     uint32_t now = systime::getMillis();
     rtos::log("ran for ", false)<<now-perfStartTime<<" ms:\n\r";
     for(int i=0;i<RTOS_MAX_TASKS; i++)
@@ -39,7 +40,6 @@ rtos_task::task_status profiler::loop()
       }
     }
     resetCounts();
-  sleepFor(10000);
   return rtos_task::RTOS_TASK_SLEEP;
 }
 
@@ -52,7 +52,7 @@ void profiler::startCount(int tasknum)
   }
 }
 
-void profiler::endCount(int tasknum)
+void profiler::stopCount(int tasknum)
 {
   // TODO Same as above: check for a possible underflow
   if(!perfCounting[tasknum])

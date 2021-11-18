@@ -10,6 +10,10 @@ class accelerator_task : public rtos_task
 public:
   accelerator_task();
 
+  task_status start() override;
+
+  task_status loop() override;
+
   /**
    * Coeficients for a 2nd order polynomial
    *
