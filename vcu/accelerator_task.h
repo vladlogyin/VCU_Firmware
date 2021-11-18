@@ -5,6 +5,13 @@
 
 #include <tuple>
 
+/**
+ * Accelerator task
+ *
+ * This task does APPS signal acquisition and processing
+ *
+ * TODO actually implement an analog input method and a timer-based PWM input
+ */
 class accelerator_task : public rtos_task
 {
 public:
