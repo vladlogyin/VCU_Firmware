@@ -22,7 +22,7 @@ SOURCES_CPP+= lib/systemutils.cpp lib/ringbuffer/ringbuffer.cpp
 # RTOS sources
 SOURCES_CPP+= rtos/rtos.cpp rtos/systime.cpp rtos/sched.cpp rtos/task.cpp rtos/io.cpp rtos/perf.cpp
 # VCU sources
-SOURCES_CPP+= vcu/vcu_init_task.cpp vcu/accelerator_task.cpp
+SOURCES_CPP+= vcu/vcu_init_task.cpp vcu/accelerator_task.cpp vcu/can_firewall_task.cpp
 
 SOURCES_C= tinyprintf/tinyprintf.c
 

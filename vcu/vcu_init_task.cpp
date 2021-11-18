@@ -13,6 +13,8 @@ rtos_task::task_status vcu_init_task::start()
   parentScheduler->addTask(&prof);
   rtos::log("Adding accelerator task");
   parentScheduler->addTask(&accelerator);
+  rtos::log("Adding can firewall task");
+  parentScheduler->addTask(&firewall);
   return rtos_task::RTOS_TASK_LOOP;
 }
 
