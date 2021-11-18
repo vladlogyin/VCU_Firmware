@@ -1,8 +1,9 @@
-#include <vcu/vcu_tasks.h>
+#include <vcu/vcu_init_task.h>
+#include <vcu/accelerator_task.h>
 
 vcu_init_task::vcu_init_task() : rtos_task()
 {
-  char task_name[] = "vcu init";
+  const char task_name[] = "vcu init";
   std::strcpy(name, task_name);
 }
 

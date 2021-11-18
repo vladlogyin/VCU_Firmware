@@ -11,7 +11,7 @@
 
 #include <rtos/rtos.h>
 
-#include <vcu/vcu_tasks.h>
+#include <vcu/vcu_init_task.h>
 /**
  * Sets up PLL
  */

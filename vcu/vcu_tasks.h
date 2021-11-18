@@ -1,22 +1,16 @@
 #ifndef VCU_TASKS_H
 #define VCU_TASKS_H
+/**
+ * This file contains forward declarations of all VCU tasks
+ *
+ */
 
 #include <rtos/rtos.h>
-#include <rtos/perf.h>
 
-/**
- * VCU init task
- *
- * This task manages all other VCU related tasks
- */
-class vcu_init_task : public rtos_task
-{
-public:
-  profiler prof;
-  vcu_init_task();
+class vcu_init_task;
 
-  task_status start() override;
+class accelerator_task;
 
-  task_status loop() override;
-};
+
+
 #endif
