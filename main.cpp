@@ -30,8 +30,8 @@ void usartsetup(void)
 
   // Setup GPIO pin GPIO_USART1_TX on GPIO port A for transmit.
   rcc_periph_clock_enable(RCC_GPIOA);
-  gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO9);
-  gpio_set_af(GPIOA, GPIO_AF7, GPIO9);
+  gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO9 | GPIO10);
+  gpio_set_af(GPIOA, GPIO_AF7, GPIO9 | GPIO10);
   // Setup UART parameters.
   usart_set_baudrate(USART1, 115200);
   usart_set_databits(USART1, 8);
