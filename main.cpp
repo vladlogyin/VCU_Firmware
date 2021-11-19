@@ -19,7 +19,7 @@ int main()
 void clocksetup()
 {
   // Set up the PLL to generate 180MHz from the external oscillator
-  rcc_clock_setup_pll(&rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_180MHZ]);
+  rcc_clock_setup_pll(&rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_168MHZ]);
 
 }
 
