@@ -3,7 +3,6 @@
 
 vcu_init_task::vcu_init_task() : rtos_task()
 {
-  accelerator;
   const char task_name[] = "vcu init";
   std::strcpy(name, task_name);
 }
