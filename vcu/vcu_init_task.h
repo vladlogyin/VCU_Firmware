@@ -14,7 +14,7 @@ class vcu_init_task : public rtos_task
 {
 public:
   profiler prof;
-  accelerator_task accelerator;
+  dummy_accelerator_task accelerator;
   can_firewall_task firewall;
 
   vcu_init_task();

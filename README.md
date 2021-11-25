@@ -14,6 +14,7 @@ Other candidates are:
 ## Timers
 - SYSTICK is used by systime
 - TIM6 is used by the profiler
+- TIM5 is used by the accelerator task to measure the PWM input signal
 ## TODO
 
 - Implement IPC mechanism

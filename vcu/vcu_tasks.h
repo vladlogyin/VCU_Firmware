@@ -9,8 +9,11 @@
 
 class vcu_init_task;
 
-class accelerator_task;
+class basic_accelerator_task;
 
+class dummy_accelerator_task;
+
+class pwm_accelerator_task;
 
 
 #endif
