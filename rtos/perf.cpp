@@ -16,8 +16,8 @@ profiler::profiler()
 rtos_task::task_status profiler::start()
 {
   rcc_periph_clock_enable(RTOS_PROFILER_TIMER_RCC);
-  // Set prescaler to 10us
-  timer_set_prescaler(RTOS_PROFILER_TIMER, rcc_apb1_frequency/100000 - 1);
+  // Set prescaler to 1us
+  timer_set_prescaler(RTOS_PROFILER_TIMER, rcc_apb1_frequency/1000000 - 1);
   // Set timer period to (2^16 - 1)
   timer_set_period(RTOS_PROFILER_TIMER, 0xFFFF);
   timer_continuous_mode(RTOS_PROFILER_TIMER);
@@ -31,12 +31,12 @@ rtos_task::task_status profiler::loop()
     updateStats=false;
     sleepFor(10000);
     uint32_t now = systime::getMillis();
-    rtos::log("ran for ", false)<<now-perfStartTime<<" ms:\n\r";
+    rtos::log("ran for ", false)<<(unsigned long)now-perfStartTime<<" ms:\n\r";
     for(int i=0;i<RTOS_MAX_TASKS; i++)
     {
       if(perfCounters[i]>0)
       {
-        rtos::log("task \"", false)<<parentScheduler->tasks[i]->name<<"\" ran for "<<perfCounters[i]*10<<" us\n\r";
+        rtos::log("task \"", false)<<parentScheduler->tasks[i]->name<<"\" ran for "<<(unsigned long)perfCounters[i]<<" us\n\r";
       }
     }
     resetCounts();
